@@ -1,3 +1,4 @@
+import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import type { RouteComponentProps } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -8,9 +9,13 @@ import Header from './Header/Header';
 import Main from './Main';
 import Navbar from './Navigation/Navbar';
 import Home from './Routes/Home';
-import MentorshipReq from '../Me/MentorshipReq';
+import MentorshipRequests from '../Me/MentorshipRequests';
 import { GlobalStyle } from './styles/global';
 import { desktop } from './styles/shared/devices';
+import { AuthorizationRoute } from './AuthorizationRoute';
+
+
+const Admin = React.lazy(() => import(/* webpackChunkName: "Admin" */ './Routes/Admin'));
 
 type MeProps = RouteComponentProps & {};
 
@@ -23,6 +28,10 @@ const meRoutes = [
   {
     path: '/me/requests',
     name: 'Mentorships',
+  },
+  {
+    path: '/me/admin',
+    name: 'Admin',
   },
 ];
 
@@ -46,8 +55,11 @@ const Me = ({
           <Main>
             <Switch>
               <Route path={`${url}/requests`}>
-                <MentorshipReq />
+                <MentorshipRequests />
               </Route>
+              <AuthorizationRoute path={`${url}/admin`} role={'Admin'}>
+                <Admin />
+              </AuthorizationRoute>
               <Route path={`${url}`}>
                 <Home />
               </Route>
